@@ -5,7 +5,7 @@ const app = express()
 
 
 
-const tourRoute = require("./src/Routes/Route.js")
+const tourRoute = require("./src/Routes/tours.route.js")
 
 app.use(cors())
 app.use(express.json())

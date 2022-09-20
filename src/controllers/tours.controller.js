@@ -1,19 +1,22 @@
-const { request } = require("express")
 const Tour = require("../models/Tour.model")
 const controllers = {
     allToursController: async (req, res,) => {
+        const limit = parseInt(req.query.limit) || 10
+        const page = parseInt(req.query.page) || 0
+        const sort = req.query.sort
+        const excludeField = []
+        // const additionalInfo= req.query
         Tour.find()
-            .select(["title", "cost", "img"])
+            .select(["title", "cost", "img",])
+            .skip(page * limit)
+            .limit(limit)
             .then(tours =>
 
-                res.send({ tours }
-
-                ))
+                res.send({ tours: tours.length }))
     },
     addTourController: async (req, res,) => {
         if (!Object.keys(req.body).length) return res.status(400).json({ "msg": "no data found request body" })
-        const data = await Tour.create(req.body)
-        res.send({ msg: "this is post route", data })
+        Tour.create(req.body).then(data => res.send(data))
     },
 
 

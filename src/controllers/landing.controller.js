@@ -6,7 +6,6 @@ module.exports = (req, res) => {
     <ol>
       <li>GET : <a href="/">Home</a></li>
       <li>GET : <a href="api/v1/tours">All Tour Packages</a></li>
-      <li>GET : <a href="api/v1/tour/1">Tour With details</a></li>
       <li>GET : <a href="api/v1/tour/cheapest">Cheapest Tours</a></li>
       <li>GET : <a href="api/v1/tour/trending">Trending Tours</a></li>
     </ol> 
@@ -14,6 +13,9 @@ module.exports = (req, res) => {
     Here are the other available routes in this api
     </p>
     <ul>
+        <li>
+        GET : api/v1/tour/id
+        </li>
         <li>
         POST : /api/v1/tour
         </li>

@@ -1,14 +1,19 @@
+const Tour = require("../models/Tour.model")
+// const {getDb} = require("../../utils/db")
 const controllers = {
     allToursController: async (req, res, next) => {
-        res.send({ msg: "this is get all tour route" })
+        // const tours =
+        res.send({ tours: "tours" })
     },
     addTourController: async (req, res, next) => {
+        if (!req.body) return res.status(400).json({ "msg": "no data found request body" })
+        Tour.create(req.body)
         res.send({ msg: "this is post route" })
     },
     getATour: async (req, res, next) => {
-
+        viewCount = 1
         // $inc: {
-        //     APICalls: 1
+        //     viewCount: 1
         // }
         res.send({ msg: `this is get route ${req.params.id}, ${viewCount}` })
     },

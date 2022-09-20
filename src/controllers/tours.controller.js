@@ -2,20 +2,37 @@ const Tour = require("../models/Tour.model")
 // const {getDb} = require("../../utils/db")
 const controllers = {
     allToursController: async (req, res, next) => {
-        // const tours =
-        res.send({ tours: "tours" })
+        Tour.find().select(["-viewCount", "-__v"])
+            .then(tours =>
+
+                res.send({ tours }
+
+                ))
     },
     addTourController: async (req, res, next) => {
-        if (!req.body) return res.status(400).json({ "msg": "no data found request body" })
-        Tour.create(req.body)
-        res.send({ msg: "this is post route" })
+        if (!Object.keys(req.body).length) return res.status(400).json({ "msg": "no data found request body" })
+        const data = await Tour.create(req.body)
+        res.send({ msg: "this is post route", data })
     },
     getATour: async (req, res, next) => {
-        viewCount = 1
-        // $inc: {
-        //     viewCount: 1
-        // }
-        res.send({ msg: `this is get route ${req.params.id}, ${viewCount}` })
+        // const viewCount = 
+
+
+
+        Tour.findOneAndUpdate({ _id: req.params.id }, {
+            $inc: {
+                viewCount: 1
+            }
+        }).select(["-viewCount", "-__v"])
+            .then(tours =>
+
+                res.send({ tours }
+
+                ))
+        // res.send({ msg: "this is a single tour find route", data })
+
+
+        // res.send({ msg: `this is get route ${req.params.id}, ${viewCount}` })
     },
     updateATour: async (req, res, next) => {
         res.send({ msg: `this is patch route ${req.params.id}` })

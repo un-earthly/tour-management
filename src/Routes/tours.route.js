@@ -1,15 +1,13 @@
 const router = require("express").Router()
 const controllers = require("../controllers/tours.controller")
 
-router
-    .route("/tours")
-    .get(controllers.allToursController)
-    .post(controllers.addTourController);
+router.get("/tours", controllers.allToursController);
+router.post("/tour", controllers.addTourController);
 
 
 
 router
-    .route("/tours/:id")
+    .route("/tour/:id")
     .get(controllers.getATour)
     .patch(controllers.updateATour)
     .delete(controllers.deleteATour)

@@ -39,7 +39,10 @@ var TourSchema = new mongoose.Schema({
         required: true,
         trim: true
     },
-    viewCount: Number
+    viewCount: {
+        type: Number,
+        default: 0
+    }
 });
 
 

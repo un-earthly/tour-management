@@ -1,15 +1,16 @@
+const { request } = require("express")
 const Tour = require("../models/Tour.model")
-// const {getDb} = require("../../utils/db")
 const controllers = {
-    allToursController: async (req, res, next) => {
-        Tour.find().select(["-viewCount", "-__v"])
+    allToursController: async (req, res,) => {
+        Tour.find()
+            .select(["title", "cost", "img"])
             .then(tours =>
 
                 res.send({ tours }
 
                 ))
     },
-    addTourController: async (req, res, next) => {
+    addTourController: async (req, res,) => {
         if (!Object.keys(req.body).length) return res.status(400).json({ "msg": "no data found request body" })
         const data = await Tour.create(req.body)
         res.send({ msg: "this is post route", data })
@@ -17,47 +18,52 @@ const controllers = {
 
 
 
-    getATour: async (req, res, next) => {
+    getATour: async (req, res,) => {
 
 
-        Tour.findOneAndUpdate({ _id: req.params.id }, {
-            $inc: {
-                viewCount: 1
-            }
-        }).select(["-viewCount", "-__v"])
-            .then(tours =>
-
-                res.send({ tours }
-
-                ));
+        Tour
+            .findOneAndUpdate({ _id: req.params.id }, {
+                $inc: {
+                    viewCount: 1
+                }
+            })
+            .then(tour => {
+                tour.viewCount += 1;
+                res.send({ tour })
+            });
     },
 
 
 
-    updateATour: async (req, res, next) => {
+    updateATour: async (req, res,) => {
         if (!Object.keys(req.body).length) return res.status(400).json({ "msg": "no data found request body" })
 
-        res.send({ msg: `this is patch route ${req.params.id}` })
+        Tour
+            .findOne({ _id: req.params.id })
+            .update(req.body)
+            .then(data => res.send(data))
     },
-    deleteATour: async (req, res, next) => {
-        const result = await Tour.deleteOne({ _id: req.params.id })
-        res.send({ result })
+    deleteATour: (req, res,) => {
+        Tour.deleteOne({ _id: req.params.id })
+            .then(result =>
+                res.send({ result })
+            )
 
     },
-    getCheapest: (req, res, next) => {
+    getCheapest: (req, res,) => {
         Tour
             .find({})
             .sort({ cost: 1 })
             .limit(3)
-            .select(["-viewCount", "-__v"])
+            .select(["title", "cost", "img"])
             .then(cheapest => res.send(cheapest))
     },
-    getTrending: (req, res, next) => {
+    getTrending: (req, res,) => {
         Tour
             .find({})
             .sort({ viewCount: -1 })
             .limit(3)
-            .select(["-viewCount", "-__v"])
+            .select(["title", "cost", "img"])
             .then(cheapest => res.send(cheapest))
     }
 

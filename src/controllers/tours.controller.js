@@ -3,16 +3,20 @@ const controllers = {
     allToursController: async (req, res,) => {
         const limit = parseInt(req.query.limit) || 10
         const page = parseInt(req.query.page) || 0
-        const sort = req.query.sort
-        const excludeField = []
-        // const additionalInfo= req.query
+        const sort = !req.query.sort ? req.query.sort : req.query.sort.split(",").join(" ")
+        const filters = { ...req.query }
+        const excludeField = ["sort", "page", "limit"]
+        excludeField.forEach(q => delete filters[q])
+        const fields = !req.query.fields ? req.query.fields : req.query.fields.split(",").join(" ")
+        console.log(fields, sort)
         Tour.find()
-            .select(["title", "cost", "img",])
+            .select(fields)
+            .sort(sort)
             .skip(page * limit)
             .limit(limit)
             .then(tours =>
 
-                res.send({ tours: tours.length }))
+                res.send({ tours }))
     },
     addTourController: async (req, res,) => {
         if (!Object.keys(req.body).length) return res.status(400).json({ "msg": "no data found request body" })

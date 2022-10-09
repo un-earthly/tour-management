@@ -1,4 +1,4 @@
-> Welcome to the [**`Tour management Api `**](https://whispering-depths-54743.herokuapp.com/api/v1/tours) api!
+> Welcome to the **`Tour management Api `** api!
 
 > This is a simple application which allows you to create, read, update, delete data using the following endpoints:
 
